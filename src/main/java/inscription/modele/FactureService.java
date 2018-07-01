@@ -28,6 +28,7 @@ public class FactureService {
 		try(Connection c = dataSource.getConnection()) {
 			String sqlStatement = "insert into client (cli_Nom, cli_Prenom, cli_adresse, cli_cp, cli_ville) values(?, ?, ?,?,?)";
 			try(PreparedStatement pstmt = c.prepareStatement(sqlStatement)) {
+				
 				pstmt.setString(1, client.getNom());
 				pstmt.setString(2, client.getPrenom());
 				pstmt.setString(3, client.getAdresse());
@@ -39,5 +40,22 @@ public class FactureService {
 			}
 		}
 	}
+	
+	public Produit destocker(Produit produit) throws InscriptionInvalideException, SQLException {
+		InscriptionInvalideException ex = new InscriptionInvalideException();
+		
+
+			try(Connection c = dataSource.getConnection()) {
+				String sqlStatement = "insert into produit (pdt_designation, prix, pdt_reference) values(?, ?, ?)";
+				try(PreparedStatement pstmt = c.prepareStatement(sqlStatement)) {
+					pstmt.setString(1, produit.getPdtDesignation());
+					pstmt.setFloat(2, produit.getPdtPrix());
+					pstmt.setString(3, produit.getPdtReference());
+				
+					pstmt.executeUpdate();
+					return produit;
+				}
+			}
+		}
 	
 }

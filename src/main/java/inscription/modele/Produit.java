@@ -9,7 +9,7 @@ public class Produit {
 	private Float pdtPrix;
 	private String pdtReference;
 	
-	public Produit(Integer pdtId, String  pdtDesignation, Float pdtPrix, String pdtReference ) {
+	public Produit( String  pdtDesignation, Float pdtPrix, String pdtReference ) {
 		this.pdtDesignation = pdtDesignation;
 		this.pdtPrix = pdtPrix;
 		this.pdtReference = pdtReference;

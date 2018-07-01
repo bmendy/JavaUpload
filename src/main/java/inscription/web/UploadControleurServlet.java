@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -19,11 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.apache.commons.csv.CSVRecord;
+
 import inscription.modele.BasicCSVReader;
 import inscription.modele.FacturePdf;
 import inscription.modele.FactureService;
 import inscription.modele.Client;
 import inscription.modele.InscriptionInvalideException;
+import inscription.modele.Produit;
 
 
 
@@ -54,9 +58,15 @@ public class UploadControleurServlet extends HttpServlet{
 		try (OutputStream lOutputStream = new FileOutputStream(new File("uploadfacture" + part));
 				InputStream lInputStream = part.getInputStream()) {
 			BasicCSVReader basicCSVReader = new BasicCSVReader();
-			Client client = basicCSVReader.read(lInputStream);
-			factureService.inscrire(client);
-			FacturePdf facturePdf = new FacturePdf();
+			 
+			ArrayList<Client> clients = basicCSVReader.readClient(lInputStream);
+			 for (Client client : clients) {
+				 factureService.inscrire(client); 
+			 }
+			// Produit produit = basicCSVReader.readProduit(lInputStream);
+			
+			// factureService.destocker(produit);
+			// FacturePdf facturePdf = new FacturePdf();
 			//facturePdf.create(lInputStream);
 			
 			
