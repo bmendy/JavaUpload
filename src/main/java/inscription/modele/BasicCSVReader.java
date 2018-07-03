@@ -6,13 +6,20 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+@Stateless
 public class BasicCSVReader {
 
 	// public static void main(String[] args) throws IOException {
@@ -41,21 +48,26 @@ public class BasicCSVReader {
 	// }
 	// }
 	// }
+	
+	@EJB
+	private FactureService factureService;
 
-	private ArrayList<Client> tableauClient;
+	
 
 
 
 
-	public ArrayList<Client> readClient(InputStream lInputStream) throws IOException {
+	public void read(InputStream lInputStream) throws IOException, InscriptionInvalideException, SQLException {
 
 		try (
 
 				Reader reader = new InputStreamReader(lInputStream, "UTF-8");
 				CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';'));
 			) {
-			ArrayList<Client>tableauClient = new ArrayList<Client>();
-			
+//			ArrayList<Client>tableauClient = new ArrayList<Client>();
+//			ArrayList<Produit>tableauProduit = new ArrayList<Produit>();
+			Client retourClient = null;
+			Facture retourFacture;
 			for (CSVRecord csvRecord : csvParser) {
 				String nomcol = csvRecord.get(0);
 				
@@ -68,14 +80,30 @@ public class BasicCSVReader {
 					String CP = csvRecord.get(4);
 					String Ville = csvRecord.get(5);
 					Client client = new Client(nom, prenom, adresse, CP, Ville);
-					tableauClient.add(client);
+				    retourClient = factureService.inscrire(client); 
+					break;
+				case "PDT":
+					String refPdt = csvRecord.get(1);
+					String designationPdt = csvRecord.get(2);
+					Float prixPdt = Float.parseFloat(csvRecord.get(4));
+					Produit pdt = new Produit(designationPdt, prixPdt, refPdt);
+					Produit retourProduit = factureService.destocker(pdt); 
+					break;
+				case "COM":
+					String comment = csvRecord.get(1); 
+					Date dateSQL = new java.sql.Date(new java.util.Date().getTime()); 
+					Facture facture = new Facture(comment,dateSQL);
+					facture.setCliId(retourClient.getId());
+					retourFacture = factureService.commenter(facture);
 					break;
 				default:
-					tableauClient = null;
-				}
+					
 				}
 				
-				return tableauClient;
+				
+				}
+				
+			
 			}
 
 	}
@@ -83,30 +111,31 @@ public class BasicCSVReader {
 	
 	
 	
-	public Produit readProduit(InputStream lInputStream) throws IOException {
+	// public ArrayList<Produit> readProduit(InputStream lInputStream) throws IOException {
 
-		try (
-
-				Reader reader = new InputStreamReader(lInputStream, "UTF-8");
-				CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';'));) {
-
-			for (CSVRecord csvRecord : csvParser) {
-				String nomcol = csvRecord.get(0);
-				switch (nomcol) {
-				case "PDT":
-					String refPdt = csvRecord.get(1);
-					String designationPdt = csvRecord.get(2);
-					Float prixPdt = Float.parseFloat(csvRecord.get(4));
-
-					return new Produit(designationPdt, prixPdt, refPdt);
-				default:
-					return null;
-
-				}
-			}
-		}
-			return null;
-		}
+//		try (
+//
+//				Reader reader = new InputStreamReader(lInputStream, "UTF-8");
+//				CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';'));) {
+//			ArrayList<Produit> tableauProduit = new ArrayList<Produit>();
+//			for (CSVRecord csvRecord : csvParser) {
+//				String nomcol = csvRecord.get(0);
+//				switch (nomcol) {
+//				case "PDT":
+//					String refPdt = csvRecord.get(1);
+//					String designationPdt = csvRecord.get(2);
+//					Float prixPdt = Float.parseFloat(csvRecord.get(4));
+//					Produit pdt = new Produit(designationPdt, prixPdt, refPdt);
+//					tableauProduit.add(pdt);
+//				default:
+//					tableauProduit = null;
+//
+//				}
+//			}
+//			return null;
+//		}
+//
+//	}
 	
 }
 

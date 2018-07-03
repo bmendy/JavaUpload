@@ -38,7 +38,7 @@ public class UploadControleurServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 
 	 @EJB
-	 private FactureService factureService;
+	 private BasicCSVReader basicCSVReader;
 
 	
 	 
@@ -57,15 +57,9 @@ public class UploadControleurServlet extends HttpServlet{
 		// Try-with-resources statement
 		try (OutputStream lOutputStream = new FileOutputStream(new File("uploadfacture" + part));
 				InputStream lInputStream = part.getInputStream()) {
-			BasicCSVReader basicCSVReader = new BasicCSVReader();
 			 
-			ArrayList<Client> clients = basicCSVReader.readClient(lInputStream);
-			 for (Client client : clients) {
-				 factureService.inscrire(client); 
-			 }
-			// Produit produit = basicCSVReader.readProduit(lInputStream);
+			basicCSVReader.read(lInputStream);
 			
-			// factureService.destocker(produit);
 			// FacturePdf facturePdf = new FacturePdf();
 			//facturePdf.create(lInputStream);
 			
