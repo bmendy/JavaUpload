@@ -5,8 +5,7 @@ public class Tva {
 	private Integer tvaId;
 	private Float tvaTaux;
 	
-	public Tva(Integer tvaId, Float tvaTaux) {
-		this.tvaId = tvaId;
+	public Tva( Float tvaTaux) {
 		this.tvaTaux = tvaTaux;
 	}
 	

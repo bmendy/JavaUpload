@@ -62,15 +62,19 @@ public class BasicCSVReader {
 		try (
 
 				Reader reader = new InputStreamReader(lInputStream, "UTF-8");
-				CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';'));
-			) {
-//			ArrayList<Client>tableauClient = new ArrayList<Client>();
-//			ArrayList<Produit>tableauProduit = new ArrayList<Produit>();
-			Client retourClient = null;
-			Facture retourFacture;
+				CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withDelimiter(';'));) {
+			ArrayList<Facture> tableauFacture = new ArrayList<Facture>();
+			ArrayList<Produit> tableauProduits = new ArrayList<Produit>();
+			ArrayList<DetailFacture> tableaudetailFacture = new ArrayList<DetailFacture>();
+			int clientId = 0;
+			Facture retourFacture = null;
+			Produit retourProduit = null;
+			DetailFacture retourDetailFacture = null;
+			Tva retourTva = null;
+			Integer quantite = null;
 			for (CSVRecord csvRecord : csvParser) {
 				String nomcol = csvRecord.get(0);
-				
+
 				switch (nomcol) {
 				case "CLI":
 					// Accessing Values by Column Index
@@ -80,37 +84,48 @@ public class BasicCSVReader {
 					String CP = csvRecord.get(4);
 					String Ville = csvRecord.get(5);
 					Client client = new Client(nom, prenom, adresse, CP, Ville);
-				    retourClient = factureService.inscrire(client); 
+					clientId = factureService.inscrire(client);
 					break;
 				case "PDT":
 					String refPdt = csvRecord.get(1);
 					String designationPdt = csvRecord.get(2);
 					Float prixPdt = Float.parseFloat(csvRecord.get(4));
 					Produit pdt = new Produit(designationPdt, prixPdt, refPdt);
-					Produit retourProduit = factureService.destocker(pdt); 
+					retourProduit = factureService.destocker(pdt);
+					quantite = Integer.parseInt(csvRecord.get(3));
+					DetailFacture detailFacture = new DetailFacture(quantite,retourProduit.getPdtId());
+					tableaudetailFacture.add(detailFacture);
+					tableauProduits.add(retourProduit);
 					break;
 				case "COM":
-					String comment = csvRecord.get(1); 
-					Date dateSQL = new java.sql.Date(new java.util.Date().getTime()); 
-					Facture facture = new Facture(comment,dateSQL);
-					facture.setCliId(retourClient.getId());
+					String comment = csvRecord.get(1);
+					Date dateSQL = new java.sql.Date(new java.util.Date().getTime());
+					Facture facture = new Facture(comment, dateSQL);
+					facture.setCliId(clientId);
 					retourFacture = factureService.commenter(facture);
+					tableauFacture.add(retourFacture);
+					break;
+				case "TVA":
+					Float tvaTaux = Float.parseFloat(csvRecord.get(1));
+					Tva tva = new Tva(tvaTaux);
+					retourTva = factureService.tvaEnregistrer(tva);
 					break;
 				default:
-					
+
 				}
-				
-				
-				}
-				
-			
+			}
+			for (DetailFacture lf : tableaudetailFacture) {
+				lf.setFaNumero(retourFacture.getFaNumero());
+				lf.setTvaId(retourTva.getTvaId());
+				retourDetailFacture = factureService.ligneFactureEnregistrer(lf);
 			}
 
+		}
 	}
+	
 
 	
-	
-	
+}	
 	// public ArrayList<Produit> readProduit(InputStream lInputStream) throws IOException {
 
 //		try (
@@ -137,6 +152,6 @@ public class BasicCSVReader {
 //
 //	}
 	
-}
+
 
 

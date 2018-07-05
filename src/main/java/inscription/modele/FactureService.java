@@ -23,28 +23,29 @@ public class FactureService {
 	
 //	public FactureService() {};
 
-	public Client inscrire(Client client) throws InscriptionInvalideException, SQLException {
-	InscriptionInvalideException ex = new InscriptionInvalideException();
-	
+	public int inscrire(Client client) throws InscriptionInvalideException, SQLException {
+		InscriptionInvalideException ex = new InscriptionInvalideException();
+		int ClientId = 0;
 
-		try(Connection c = dataSource.getConnection()) {
+		try (Connection c = dataSource.getConnection()) {
 			String sqlStatement = "insert into client (cli_Nom, cli_Prenom, cli_adresse, cli_cp, cli_ville) values(?, ?, ?,?,?)";
-			try(PreparedStatement pstmt = c.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS)) {
-				
+			try (PreparedStatement pstmt = c.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS)) {
+
 				pstmt.setString(1, client.getNom());
 				pstmt.setString(2, client.getPrenom());
 				pstmt.setString(3, client.getAdresse());
 				pstmt.setString(4, client.getCp());
 				pstmt.setString(5, client.getVille());
-			
+
 				pstmt.executeUpdate();
 				ResultSet result = pstmt.getGeneratedKeys();
 				result.next();
-				int ClientId = result.getInt(1);
-				client.setId(ClientId);			
-			} 
-		} 
-		return client;
+				ClientId = result.getInt(1);
+				client.setId(ClientId);
+			}
+
+		}
+		return ClientId;
 	}
 	
 	public Produit destocker(Produit produit) throws InscriptionInvalideException, SQLException {
@@ -53,15 +54,19 @@ public class FactureService {
 
 			try(Connection c = dataSource.getConnection()) {
 				String sqlStatement = "insert into produit (pdt_designation, prix, pdt_reference) values(?, ?, ?)";
-				try(PreparedStatement pstmt = c.prepareStatement(sqlStatement)) {
+				try(PreparedStatement pstmt = c.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS)) {
 					pstmt.setString(1, produit.getPdtDesignation());
 					pstmt.setFloat(2, produit.getPdtPrix());
 					pstmt.setString(3, produit.getPdtReference());
 				
 					pstmt.executeUpdate();
-					return produit;
+					ResultSet result = pstmt.getGeneratedKeys();
+					result.next();
+					int PdtId = result.getInt(1);
+					produit.setPdtId(PdtId);
 				}
 			}
+			return produit;
 		}
 	
 	
@@ -71,14 +76,54 @@ public class FactureService {
 
 			try(Connection c = dataSource.getConnection()) {
 				String sqlStatement = "insert into facture (fa_commentaire, fa_date, cli_id) values(?, ?, ?)";
-				try(PreparedStatement pstmt = c.prepareStatement(sqlStatement)) {
+				try(PreparedStatement pstmt = c.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS)) {
 					pstmt.setString(1, facture.getFaCommentaire());
 					pstmt.setDate(2, facture.getFaDate());
 					pstmt.setInt(3, facture.getCliId());
 					pstmt.executeUpdate();
-					return facture;
+					ResultSet result = pstmt.getGeneratedKeys();
+					result.next();
+					int FactureNum = result.getInt(1);
+					facture.setFaNumero(FactureNum);
 				}
 			}
+			return facture;
+		}
+	
+	
+	public DetailFacture ligneFactureEnregistrer(DetailFacture detailFacture) throws InscriptionInvalideException, SQLException {
+		InscriptionInvalideException ex = new InscriptionInvalideException();
+		
+
+			try(Connection c = dataSource.getConnection()) {
+				String sqlStatement = "insert into detailfacture (lfa_quantite, fa_numero, pdt_id, tva_id) values(?, ?, ?, ?)";
+				try(PreparedStatement pstmt = c.prepareStatement(sqlStatement)) {
+					pstmt.setInt(1, detailFacture.getLfaQuantite());
+					pstmt.setInt(2, detailFacture.getFaNumero());
+					pstmt.setInt(3, detailFacture.getPdtId());
+					pstmt.setInt(4, detailFacture.getTvaId());
+					pstmt.executeUpdate();	
+				}
+			}
+			return detailFacture;
+		}
+	
+	public Tva tvaEnregistrer(Tva tva) throws InscriptionInvalideException, SQLException {
+		InscriptionInvalideException ex = new InscriptionInvalideException();
+		
+
+			try(Connection c = dataSource.getConnection()) {
+				String sqlStatement = "insert into tva (tva_taux) values(?)";
+				try(PreparedStatement pstmt = c.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS)) {
+					pstmt.setFloat(1, tva.getTvaTaux());
+					pstmt.executeUpdate();
+					ResultSet result = pstmt.getGeneratedKeys();
+					result.next();
+					int tvaId = result.getInt(1);
+					tva.setTvaId(tvaId);
+				}
+			}
+			return tva;
 		}
 	
 }
