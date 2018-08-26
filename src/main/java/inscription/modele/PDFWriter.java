@@ -76,7 +76,7 @@ public class PDFWriter {
 	    String VilleClient = resultat.getString("cli_ville");
 	    
 	    Date date = resultat.getDate("fa_date");
-	    
+	    Float TVA = resultat.getFloat("tva_taux");
 	    
 	    String Commentaire = resultat.getString("fa_commentaire");
 	    
@@ -113,11 +113,8 @@ public class PDFWriter {
 		table.addCell(new Paragraph("Quantité"));
 		table.addCell(new Paragraph("Prix unitaire HT"));
 		table.addCell(new Paragraph("Montant HT"));
-		table.addCell(new Paragraph("TVA"));
 		table.addCell(new Paragraph("Montant TTC"));
-//		table.setWidthPercentage(100);
-//		float[] columnWidths = {2.5f, 3f, 1f, 1.5f};
-//		table.setWidths(columnWidths);
+		
 		document.add(table);
 		resultat.beforeFirst();
 		while (resultat.next()) {
@@ -127,7 +124,6 @@ public class PDFWriter {
 		    Float PdtPrix = resultat.getFloat("prix");
 		    Integer Quantite =  resultat.getInt("lfa_quantite");
 		    Float MontantHTPdt = calculMontantHTPdt(PdtPrix, Quantite);
-		    Float TVA = resultat.getFloat("tva_taux");
 		    Float MontantTTCPdt = calculMontantTTCPdt(MontantHTPdt, TVA);
 		PdfPTable table2 = new PdfPTable(6);
 		table2.addCell(PdtRef);
@@ -142,13 +138,19 @@ public class PDFWriter {
 	    } ;
 	    
 	    Paragraph paragraph3 = new Paragraph("Commentaires: " + Commentaire);
-	    paragraph3.setIndentationLeft(250);
-	    paragraph.setSpacingAfter(20);			
-		paragraph.setSpacingAfter(20);
+	    paragraph3.setIndentationLeft(225);
+	    paragraph.setSpacingBefore(50);			
+		paragraph.setSpacingAfter(30);
 		document.add(paragraph3);
 		
+		Paragraph paragraph4 = new Paragraph("Taux TVA: " + TVA);
+		paragraph4.setSpacingBefore(20);			
+		paragraph4.setSpacingAfter(30);
+		paragraph4.setIndentationLeft(400);
+		document.add(paragraph4);
+		
 		PdfPTable table3 = new PdfPTable(1);
-	    table3.setSpacingBefore(50);
+	    table3.setSpacingBefore(30);
 //		PdfPCell defaultcell = table.getDefaultCell();
 //		defaultcell.setFixedHeight(35f);
 //		defaultcell.setVerticalAlignment(Element.ALIGN_MIDDLE);
