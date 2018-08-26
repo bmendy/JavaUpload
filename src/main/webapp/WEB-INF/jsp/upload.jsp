@@ -27,13 +27,16 @@
 		<form enctype="multipart/form-data" method="post">
 		<label for="">Veuillez charger votre facture : </label>
 		 <input type="file" name="file">
+		 <label for="">Veuillez entrer la destination </label>
+		 <input type="text" value="/tmp" name="destination"/>
+		
 		 <input type="submit" value="Upload">
 		 </form>
 		
 
 
 	<div>
-	  	<a href="<c:url value="/"/>">Retour à l'accueil</a>  
+	  	<a href="<c:url value="/accueil"/>">Retour à l'accueil</a>  
 	</div>
   
   </body>

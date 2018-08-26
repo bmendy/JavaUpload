@@ -1,6 +1,6 @@
 package inscription.modele;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Facture {
 

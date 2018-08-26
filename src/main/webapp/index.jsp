@@ -7,6 +7,9 @@
     <title>Java EE</title>
   </head>
   <body>
-  	<a href="<c:url value="/upload"/>">S'inscrire</a>  
+  <div id="succes">
+	 <p align="center"><c:out value="${message}"></c:out></p>
+ </div>
+  	<a href="<c:url value="/accueil"/>">Retour à l'accueil</a>  
   </body>
 </html>

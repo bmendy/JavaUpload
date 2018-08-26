@@ -1,10 +1,14 @@
 package inscription.modele;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Vector;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -17,11 +21,11 @@ public class FactureService {
 	private DataSource dataSource;
 	
 	
-//	public FactureService(DataSource dataSource) {
-//		this.dataSource = dataSource;
-//	}
+/*public FactureService(DataSource dataSource) {
+	this.dataSource = dataSource;
+}
 	
-//	public FactureService() {};
+	public FactureService() {};*/
 
 	public int inscrire(Client client) throws InscriptionInvalideException, SQLException {
 		InscriptionInvalideException ex = new InscriptionInvalideException();
@@ -78,7 +82,7 @@ public class FactureService {
 				String sqlStatement = "insert into facture (fa_commentaire, fa_date, cli_id) values(?, ?, ?)";
 				try(PreparedStatement pstmt = c.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS)) {
 					pstmt.setString(1, facture.getFaCommentaire());
-					pstmt.setDate(2, facture.getFaDate());
+					pstmt.setDate(2, (java.sql.Date) facture.getFaDate());
 					pstmt.setInt(3, facture.getCliId());
 					pstmt.executeUpdate();
 					ResultSet result = pstmt.getGeneratedKeys();
@@ -126,4 +130,30 @@ public class FactureService {
 			return tva;
 		}
 	
+	public ArrayList<Facture> lister() throws InscriptionInvalideException, SQLException {
+		InscriptionInvalideException ex = new InscriptionInvalideException();
+		ArrayList<Facture> listeFact = new ArrayList();
+		ResultSet resultat = null;
+		try(Connection c = dataSource.getConnection()) {
+			String sqlStatement = "select * from facture";
+			try(PreparedStatement pstmt = c.prepareStatement(sqlStatement)) {
+				resultat = pstmt.executeQuery();
+				while (resultat.next()) {
+				 int id =  resultat.getInt("fa_numero");
+				 String comment = resultat.getString("fa_commentaire");
+				 Date date = resultat.getDate("fa_date");
+				 int clientId = resultat.getInt("cli_id");
+				 Facture fact = new Facture(comment, date);
+				 fact.setCliId(clientId);
+				 fact.setFaNumero(id);
+				 listeFact.add(fact);
+			}
+			return listeFact;
+		}
+		
+		
+		
+	}
+	
+}
 }

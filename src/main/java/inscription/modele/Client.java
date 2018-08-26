@@ -1,5 +1,6 @@
 package inscription.modele;
 
+import javax.ejb.Stateless;
 
 
 public class Client {
@@ -42,8 +43,8 @@ public class Client {
 		return adresse;
 	}
 
-	public void setAdresse1(String adresse1) {
-		this.adresse = adresse1;
+	public void setAdresse(String adresse) {
+		this.adresse = adresse;
 	}
 
 	public String getVille() {
