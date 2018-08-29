@@ -1,5 +1,6 @@
 package inscription.modele;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,9 +31,9 @@ public class BasicCSVReader {
 	
 	
 
-	@PostConstruct
-	public void read(InputStream lInputStream) throws IOException, InscriptionInvalideException, SQLException {
-		
+
+	public Facture read(InputStream lInputStream) throws IOException, SQLException {
+		Facture retourFacture = null;
 		try (
 				
 				Reader reader = new InputStreamReader(lInputStream, "UTF-8");
@@ -41,7 +42,7 @@ public class BasicCSVReader {
 			ArrayList<Produit> tableauProduits = new ArrayList<Produit>();
 			ArrayList<DetailFacture> tableaudetailFacture = new ArrayList<DetailFacture>();
 			int clientId = 0;
-			Facture retourFacture = null;
+			
 			Produit retourProduit = null;
 			DetailFacture retourDetailFacture = null;
 			Tva retourTva = null;
@@ -96,9 +97,14 @@ public class BasicCSVReader {
 				retourDetailFacture = factureService.ligneFactureEnregistrer(lf);
 			}
 			//Facture factureFinale = new Facture(retourFacture.getFaCommentaire(),retourFacture.getFaDate());
-			//return retourFacture;
-		}
-		
+			
+		} catch (FileNotFoundException e) {
+			e.getMessage();	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return retourFacture;
 	}
 	
 

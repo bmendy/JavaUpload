@@ -29,9 +29,6 @@ public class ListeFacturesServlet extends HttpServlet{
 				ArrayList listeFact = factureService.lister();
 				req.setAttribute("factures", listeFact);
 				
-			} catch (InscriptionInvalideException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

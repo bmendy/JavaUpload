@@ -27,8 +27,8 @@ public class FactureService {
 	
 	public FactureService() {};*/
 
-	public int inscrire(Client client) throws InscriptionInvalideException, SQLException {
-		InscriptionInvalideException ex = new InscriptionInvalideException();
+	public int inscrire(Client client) throws SQLException {
+
 		int ClientId = 0;
 
 		try (Connection c = dataSource.getConnection()) {
@@ -47,15 +47,15 @@ public class FactureService {
 				ClientId = result.getInt(1);
 				client.setId(ClientId);
 			}
-
-		}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		return ClientId;
 	}
 	
-	public Produit destocker(Produit produit) throws InscriptionInvalideException, SQLException {
-		InscriptionInvalideException ex = new InscriptionInvalideException();
+	public Produit destocker(Produit produit) throws SQLException {
 		
-
 			try(Connection c = dataSource.getConnection()) {
 				String sqlStatement = "insert into produit (pdt_designation, prix, pdt_reference) values(?, ?, ?)";
 				try(PreparedStatement pstmt = c.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS)) {
@@ -69,15 +69,16 @@ public class FactureService {
 					int PdtId = result.getInt(1);
 					produit.setPdtId(PdtId);
 				}
-			}
+			}  catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 			return produit;
 		}
 	
 	
-	public Facture commenter(Facture facture) throws InscriptionInvalideException, SQLException {
-		InscriptionInvalideException ex = new InscriptionInvalideException();
-		
-
+	public Facture commenter(Facture facture) throws SQLException {
+	
 			try(Connection c = dataSource.getConnection()) {
 				String sqlStatement = "insert into facture (fa_commentaire, fa_date, cli_id) values(?, ?, ?)";
 				try(PreparedStatement pstmt = c.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS)) {
@@ -90,15 +91,16 @@ public class FactureService {
 					int FactureNum = result.getInt(1);
 					facture.setFaNumero(FactureNum);
 				}
-			}
+			}  catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 			return facture;
 		}
 	
 	
-	public DetailFacture ligneFactureEnregistrer(DetailFacture detailFacture) throws InscriptionInvalideException, SQLException {
-		InscriptionInvalideException ex = new InscriptionInvalideException();
-		
-
+	public DetailFacture ligneFactureEnregistrer(DetailFacture detailFacture) throws SQLException {
+	
 			try(Connection c = dataSource.getConnection()) {
 				String sqlStatement = "insert into detailfacture (lfa_quantite, fa_numero, pdt_id, tva_id) values(?, ?, ?, ?)";
 				try(PreparedStatement pstmt = c.prepareStatement(sqlStatement)) {
@@ -108,13 +110,14 @@ public class FactureService {
 					pstmt.setInt(4, detailFacture.getTvaId());
 					pstmt.executeUpdate();	
 				}
-			}
+			}  catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 			return detailFacture;
 		}
 	
-	public Tva tvaEnregistrer(Tva tva) throws InscriptionInvalideException, SQLException {
-		InscriptionInvalideException ex = new InscriptionInvalideException();
-		
+	public Tva tvaEnregistrer(Tva tva) throws SQLException {
 
 			try(Connection c = dataSource.getConnection()) {
 				String sqlStatement = "insert into tva (tva_taux) values(?)";
@@ -126,12 +129,14 @@ public class FactureService {
 					int tvaId = result.getInt(1);
 					tva.setTvaId(tvaId);
 				}
-			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 			return tva;
 		}
 	
-	public ArrayList<Facture> lister() throws InscriptionInvalideException, SQLException {
-		InscriptionInvalideException ex = new InscriptionInvalideException();
+	public ArrayList<Facture> lister() throws SQLException {
 		ArrayList<Facture> listeFact = new ArrayList();
 		ResultSet resultat = null;
 		try(Connection c = dataSource.getConnection()) {
@@ -147,13 +152,14 @@ public class FactureService {
 				 fact.setCliId(clientId);
 				 fact.setFaNumero(id);
 				 listeFact.add(fact);
-			}
+			} 
+				
 			return listeFact;
 		}
 		
 		
 		
-	}
+	} 
 	
 }
 }
