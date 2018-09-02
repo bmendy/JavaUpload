@@ -4,6 +4,8 @@
 <html>
   <head>
   	<meta charset="UTF-8">
+  	<link type="text/css" rel="stylesheet"
+    href="<c:url value="/form.css"/>" /> 
     <title>Java EE</title>
   </head>
   <body>

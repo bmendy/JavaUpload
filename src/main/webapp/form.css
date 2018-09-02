@@ -1,0 +1,38 @@
+
+#bandeau {
+	
+	 background-color: #555;
+    color: white;
+    height: 100px;
+    padding: 14px 16px;
+    font-size: 25px;
+    width: 100%;
+     display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+#formulaire {
+	font-family: 'Poppins', sans-serif;
+	margin-top: 20px;
+	padding: 5px;
+}
+
+#retourblock {
+	 display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  margin-top: 40px;
+}
+
+a:link {
+	text-decoration: none;
+	width:150px;
+	border-width: thin; 
+	border-style: solid;
+}

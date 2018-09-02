@@ -5,28 +5,16 @@
   <head>
   	<meta charset="UTF-8">
     <title>Java EE</title>
-    <style type="text/css">
-    	form > div {
-    		padding: .5em;
-    	}
-    	
-    	div > label:first-child {
-    		display: inline-block;
-			min-width: 18em;
-		}
-		
-		.error {
-			color: red;
-		}
-    </style>
+  <link type="text/css" rel="stylesheet" href="<c:url value="/form.css"/>" /> 
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
   </head>
   <body>
-
+<header id="bandeau">Enregistrement Factures</header>
 
 	
-		<form enctype="multipart/form-data" method="post">
+		<form enctype="multipart/form-data" method="post" id="formulaire">
 		<label for="">Veuillez charger votre facture : </label>
-		 <input type="file" name="file">
+		 <input type="file" name="file"><br/>
 		 <label for="">Veuillez entrer la destination </label>
 		 <input type="text" value="/tmp" name="destination"/>
 		
@@ -35,8 +23,9 @@
 		
 
 
-	<div>
-	  	<a href="<c:url value="/accueil"/>">Retour à l'accueil</a>  
+	<div id="retourblock">
+	  	<a href="<c:url value="/accueil"/>">Retour à l'accueil
+	  	</a>  
 	</div>
   
   </body>

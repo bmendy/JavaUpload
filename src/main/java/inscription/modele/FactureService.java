@@ -139,27 +139,25 @@ public class FactureService {
 	public ArrayList<Facture> lister() throws SQLException {
 		ArrayList<Facture> listeFact = new ArrayList();
 		ResultSet resultat = null;
-		try(Connection c = dataSource.getConnection()) {
+		try (Connection c = dataSource.getConnection()) {
 			String sqlStatement = "select * from facture";
-			try(PreparedStatement pstmt = c.prepareStatement(sqlStatement)) {
+			try (PreparedStatement pstmt = c.prepareStatement(sqlStatement)) {
 				resultat = pstmt.executeQuery();
 				while (resultat.next()) {
-				 int id =  resultat.getInt("fa_numero");
-				 String comment = resultat.getString("fa_commentaire");
-				 Date date = resultat.getDate("fa_date");
-				 int clientId = resultat.getInt("cli_id");
-				 Facture fact = new Facture(comment, date);
-				 fact.setCliId(clientId);
-				 fact.setFaNumero(id);
-				 listeFact.add(fact);
-			} 
-				
-			return listeFact;
+					int id = resultat.getInt("fa_numero");
+					String comment = resultat.getString("fa_commentaire");
+					Date date = resultat.getDate("fa_date");
+					int clientId = resultat.getInt("cli_id");
+					Facture fact = new Facture(comment, date);
+					fact.setCliId(clientId);
+					fact.setFaNumero(id);
+					listeFact.add(fact);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		
-		
-	} 
-	
-}
+		return listeFact;
+	}
 }

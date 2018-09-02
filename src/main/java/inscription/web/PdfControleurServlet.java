@@ -50,9 +50,8 @@ public class PdfControleurServlet extends HttpServlet{
 		
 		try {
 			genererPDF.generatePdf(PATH, nomFac, idFacture);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (IOException | SQLException e) {
+			e.getMessage();
 		}
 		File pdf = new File(PATH + nomFac);
 		

@@ -166,10 +166,9 @@ public class PDFWriter {
 	    } 
 	    } catch (DocumentException de) {
 	      de.fillInStackTrace();
-	    } catch (IOException de) {
-	     // ioe.printStackTrace();
-	    } finally {
-	    	}
+	    } catch (IOException ioe) {
+	     ioe.printStackTrace();
+	    } 
 	    }
 	   
 
