@@ -1,17 +1,15 @@
-
 #bandeau {
-	
-	 background-color: #555;
-    color: white;
-    height: 100px;
-    padding: 14px 16px;
-    font-size: 25px;
-    width: 100%;
-     display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
+	background-color: #555;
+	color: white;
+	height: 80px;
+	padding: 14px 16px;
+	font-size: 25px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	font-family: 'Poppins', sans-serif;
 }
 
 #formulaire {
@@ -21,18 +19,44 @@
 }
 
 #retourblock {
-	 display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  width: 100%;
-  margin-top: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	font-family: 'Poppins', sans-serif;
+	width: 100%;
+	margin-top: 40px;
 }
 
 a:link {
 	text-decoration: none;
-	width:150px;
-	border-width: thin; 
+	width: 150px;
+	border-width: thin;
 	border-style: solid;
+}
+
+#tablefacnum {
+	border-style: none;
+}
+
+#tablefacdate {
+	border-style: none;
+}
+
+#tablefac {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	font-family: 'Poppins', sans-serif;
+	width: 100%;
+	margin-top: 40px;
+	border-style: none;
+}
+
+#buttontelec {
+	padding: 1px 3px;
+	background-color: #555;
+	color: white;
+	margin-left:4px;
 }

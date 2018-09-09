@@ -5,15 +5,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link type="text/css" rel="stylesheet"
-    href="<c:url value="/form.css"/>" /> 
+<link type="text/css" rel="stylesheet" href="<c:url value="/form.css"/>" /> 
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 <title>Accueil</title>
 </head>
 <body>
+<header id="bandeau">Accueil</header>
 <div id="accueil">
 
-    <p><a href="<c:url value="/chargementcsv"/>">Sauvegarder une facture en base</a></p>
-    <p><a href="<c:url value="/listeFacture"/>">Voir les factures existantes</a></p>
+    <p id="retourblock"><a href="<c:url value="/chargementcsv"/>">Sauvegarder une facture en base</a></p>
+    <p id="retourblock"><a href="<c:url value="/listeFacture"/>">Voir les factures existantes</a></p>
 
 </div>
 </body>

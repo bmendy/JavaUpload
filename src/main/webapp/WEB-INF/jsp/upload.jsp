@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
   </head>
   <body>
-<header id="bandeau">Enregistrement Factures</header>
+<header id="bandeau">Enregistrement des factures</header>
 
 	
 		<form enctype="multipart/form-data" method="post" id="formulaire">
